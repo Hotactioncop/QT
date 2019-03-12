@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Images/icon2.ico</file>
+        <file>Images/Disney_42.png</file>
+    </qresource>
+</RCC>
