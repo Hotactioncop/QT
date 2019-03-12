@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Tetris</class>
+ <widget class="QMainWindow" name="Tetris">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>584</width>
+    <height>471</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Tetris</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>Images/Tetris.png</normaloff>Images/Tetris.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="2">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QPushButton" name="buttonNewGame">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Новая игра</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Images/iconNewGame.ico</normaloff>Images/iconNewGame.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonPause">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Пауза</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Images/PauseDisabled_26933.ico</normaloff>Images/PauseDisabled_26933.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonStop">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Стоп</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Images/Stop_37106.ico</normaloff>Images/Stop_37106.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonExit">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Выход</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Images/exit_closethesession_close_6317.ico</normaloff>Images/exit_closethesession_close_6317.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="Score">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="text">
+         <string>Счет</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLCDNumber" name="lcdNumber">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="midLineWidth">
+         <number>0</number>
+        </property>
+        <property name="digitCount">
+         <number>8</number>
+        </property>
+        <property name="segmentStyle">
+         <enum>QLCDNumber::Flat</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1">
+     <widget class="Glass" name="widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>220</width>
+        <height>400</height>
+       </size>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="m_rows" stdset="0">
+       <UInt>0</UInt>
+      </property>
+      <property name="m_columns" stdset="0">
+       <UInt>0</UInt>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="NextLable">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="text">
+         <string>Следующая</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="NextFigure" name="widget_2" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>80</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextBrowser" name="textBrowser">
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>280</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>180</width>
+          <height>280</height>
+         </size>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Правила игры.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Фигуры разных цветов с определенным интервалом движутся вниз. При построении 3х и более цветов в один ряд (горизонтальный или вертикальный) - поле очищается.&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Цель игры.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Набрать наибольшее количество очков.&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Управление.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Стрелки влево и вправо - сдвинуть фигуру в указанном направлении.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Стрелки вверх и вниз - изменить градацию цветов в указанном направлении.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Пробел - ускорить падение фигуры.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>584</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Glass</class>
+   <extends>QWidget</extends>
+   <header>glass.h</header>
+   <container>1</container>
+   <slots>
+    <signal>setScore(int)</signal>
+    <signal>changePauseButton()</signal>
+    <signal>sendNextFigure(Figure*)</signal>
+    <signal>stopNextFigure(bool*)</signal>
+    <slot>slotNewGame()</slot>
+    <slot>pauseGame()</slot>
+    <slot>stopGame()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>NextFigure</class>
+   <extends>QWidget</extends>
+   <header>nextfigure.h</header>
+   <container>1</container>
+   <slots>
+    <slot>getNextFigure(Figure*)</slot>
+    <slot>stopGame(bool*)</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonExit</sender>
+   <signal>clicked()</signal>
+   <receiver>Tetris</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>449</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>414</x>
+     <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonNewGame</sender>
+   <signal>clicked()</signal>
+   <receiver>widget</receiver>
+   <slot>slotNewGame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>242</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widget</sender>
+   <signal>setScore(int)</signal>
+   <receiver>lcdNumber</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPause</sender>
+   <signal>clicked()</signal>
+   <receiver>widget</receiver>
+   <slot>pauseGame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>379</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widget</sender>
+   <signal>changePauseButton()</signal>
+   <receiver>Tetris</receiver>
+   <slot>changeButtonPause()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonStop</sender>
+   <signal>clicked()</signal>
+   <receiver>widget</receiver>
+   <slot>stopGame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>379</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widget</sender>
+   <signal>sendNextFigure(Figure*)</signal>
+   <receiver>widget_2</receiver>
+   <slot>getNextFigure(Figure*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widget</sender>
+   <signal>stopNextFigure(bool*)</signal>
+   <receiver>widget_2</receiver>
+   <slot>stopGame(bool*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>on_pushButton_3_clicked()</signal>
+  <slot>changeButtonPause()</slot>
+ </slots>
+</ui>

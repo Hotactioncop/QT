@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/MyImages">
+        <file>Images/exit_closethesession_close_6317.ico</file>
+        <file>Images/iconExit.ico</file>
+        <file>Images/iconInfo.ico</file>
+        <file>Images/iconInstructions.ico</file>
+        <file>Images/iconNewGame.ico</file>
+        <file>Images/PauseDisabled_26933.ico</file>
+        <file>Images/Start_37108.ico</file>
+        <file>Images/Tetris.png</file>
+        <file>Images/Stop_37106.ico</file>
+        <file>Images/BackGround.jpg</file>
+    </qresource>
+</RCC>
