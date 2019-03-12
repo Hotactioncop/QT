@@ -9,8 +9,6 @@
 
 Space::Space(QWidget *parent) : QWidget(parent)
 {
-    qDebug() << "Space";
-
     QObject::connect(this,SIGNAL(signalGlassInit()), this, SLOT(slotGlassInit()),Qt::QueuedConnection);
     emit signalGlassInit();
     omnomnom = new Snake();
@@ -25,8 +23,6 @@ Space::Space(QWidget *parent) : QWidget(parent)
 
 void Space::slotGlassInit()
 {
-    qDebug() << "slotGlassInit";
-
     glass.resize(m_rows);
     for(auto&x:glass){
         x.resize(m_columns);
@@ -39,29 +35,30 @@ void Space::slotGlassInit()
 
 void Space::startGame()
 {
-    qDebug() << "startGame";
-
-    if(gameOn){
-        if(pause==true){
+    if(gameOn){             //Проверяем, если игра уже идет, то обнуляем текущий результат
+        if(pause==true){    //Проверяем, если стоит пуза, то обнуляем текущий результат
             pause = false;
             emit changePause();
         }
         else{
            killTimer(idTimer);
         }
-        omnomnom->restartSnake();
+        omnomnom->restartSnake();//Метод класса Змеи, возвращает дефолтный размер и положение змеи на поле
     }
     gameOn = true;
     idTimer = startTimer(200);
-    setApple();
-    this->setFocus();
-    direct = right;
+    setApple(); //Метод, устанавливает яблоко в свободных ячейках игрового поля
+    this->setFocus(); //Фокус на поле, иначе останется на кнопке "Start" и сигналы от стрелок будут игнорироваться
+    direct = right; //Устанавливаем дефолтное направление для начала игры
     score = 0;
-    emit setScore(score);
+    emit setScore(score); //Выводим счет в LCDпанель
 }
 
 void Space::pauseGame()
 {
+    /*Метод, останавливающий игру. Проверяем, если игра идет, то ставим на паузу и передаем сигнал кнопке для её изменения с "Pause" на "Continue".
+     * Если стоит пауза, то продолжаем игру и передаем сигнал кнопке для её изменения с "Continue" на "Pause".
+     * Если игра не идет, то не реагируем.*/
     if(gameOn){
         if(pause==false){
             killTimer(idTimer);
@@ -78,6 +75,9 @@ void Space::pauseGame()
 
 void Space::stopGame()
 {
+    /*Метод обнуляющий игру. Проверяем, если игра идет, то обнуляем результат игры и передаем сигнал на табло для обнуления счетчика.
+     * Если игра идет и стоит пауза, то обнуляем игру, меняем счет на табло и передаем сигнал кнопке для её изменения с "Continue" на "Pause".
+     * Если игра не идет, то не реагируем.*/
     if(gameOn){
         if(pause==true){
             pause = false;
@@ -97,8 +97,7 @@ void Space::stopGame()
 
 void Space::paintEvent(QPaintEvent *event)
 {
-    qDebug() << "paintEvent";
-
+    //Рисуем поле
     QPainter p_pen(this);
     for(uint i = 0; i < m_rows;i++){
         for(uint j = 0; j < m_columns; j++){
@@ -106,18 +105,23 @@ void Space::paintEvent(QPaintEvent *event)
         }
     }
     if(gameOn){
-        p_pen.fillRect(apple.x(),apple.y(),W-1,W-1,QColor(68,145,56));
+        p_pen.fillRect(apple.x(),apple.y(),W-1,W-1,QColor(68,145,56)); //Рисуем яблоко
         for(auto&X:omnomnom->my_snake){
-            p_pen.fillRect(X.x(), X.y(), W-1, W-1, QColor(223,111,60));
+            p_pen.fillRect(X.x(), X.y(), W-1, W-1, QColor(223,111,60)); //Рисуем змейку
         }
     }
 }
 
 void Space::timerEvent(QTimerEvent *event)
 {
+    /*Проверяем, если идет игра:
+     * 1.Если голова змеи и любой участок тела(за исключением первых двух) совпадают, тоесть змея пересекает себя - игра закончена.
+     * 2.Определяем текущее направление движения змеи(право, лево, верх, низ). Змея движется путем переноса последней ячейки(хвоста) в начало змеи(становится головой):
+     *  a)Если змея пересекает границу поля - то перенести голову, на противоположную сторону поля.
+     *  b)Если голова змеи и яблоко совпадают, то вызываем метод класса Snake, где не удаляем хвост змеи при переносе его в начало, и увеличиваем счет.*/
     if(gameOn){
         for(auto x = omnomnom->my_snake.begin()+2; x!=omnomnom->my_snake.end(); x++){
-            if (*omnomnom->first==*x){
+            if (omnomnom->my_snake.at(0)==*x){
                 QMessageBox::information(this,"Message", "GAME OVER");
                 gameOn = false;
                 killTimer(idTimer);
@@ -128,89 +132,89 @@ void Space::timerEvent(QTimerEvent *event)
         }
         switch (direct){
         case right:
-            if(omnomnom->first->x()==m_columns*W-W){
-                if(*omnomnom->first==apple){
-                    omnomnom->moveSnake(0,omnomnom->first->y(), true);
+            if(omnomnom->my_snake.at(0).x()==m_columns*W-W){
+                if(omnomnom->my_snake.at(0)==apple){
+                    omnomnom->moveSnake(0,omnomnom->my_snake.at(0).y(), true);
                     score+=10;
                     emit setScore(score);
                     setApple();
                 }
                 else{
-                    omnomnom->moveSnake(0,omnomnom->first->y());
+                    omnomnom->moveSnake(0,omnomnom->my_snake.at(0).y());
                 }
             }
-            else if(*omnomnom->first==apple){
-                omnomnom->moveSnake(omnomnom->first->x()+W,omnomnom->first->y(), true);
+            else if(omnomnom->my_snake.at(0)==apple){
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x()+W,omnomnom->my_snake.at(0).y(), true);
                 score+=10;
                 emit setScore(score);
                 setApple();
             }
             else{
-                omnomnom->moveSnake(omnomnom->first->x()+W,omnomnom->first->y());
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x()+W,omnomnom->my_snake.at(0).y());
             }
             break;
         case left:
-            if(omnomnom->first->x()==0){
-                if(*omnomnom->first==apple){
-                    omnomnom->moveSnake(m_columns*W-W,omnomnom->first->y(),true);
+            if(omnomnom->my_snake.at(0).x()==0){
+                if(omnomnom->my_snake.at(0)==apple){
+                    omnomnom->moveSnake(m_columns*W-W,omnomnom->my_snake.at(0).y(),true);
                     score+=10;
                     emit setScore(score);
                     setApple();
                 }
                 else{
-                    omnomnom->moveSnake(m_columns*W-W,omnomnom->first->y());
+                    omnomnom->moveSnake(m_columns*W-W,omnomnom->my_snake.at(0).y());
                 }
             }
-            else if(*omnomnom->first==apple){
-                omnomnom->moveSnake(omnomnom->first->x()-W,omnomnom->first->y(), true);
+            else if(omnomnom->my_snake.at(0)==apple){
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x()-W,omnomnom->my_snake.at(0).y(), true);
                 score+=10;
                 emit setScore(score);
                 setApple();
             }
             else{
-                omnomnom->moveSnake(omnomnom->first->x()-W,omnomnom->first->y());
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x()-W,omnomnom->my_snake.at(0).y());
             }
             break;
         case up:
-            if(omnomnom->first->y()==0){
-                if(*omnomnom->first==apple){
-                    omnomnom->moveSnake(omnomnom->first->x(),m_rows*W-W,true);
+            if(omnomnom->my_snake.at(0).y()==0){
+                if(omnomnom->my_snake.at(0)==apple){
+                    omnomnom->moveSnake(omnomnom->my_snake.at(0).x(),m_rows*W-W,true);
                     score+=10;
                     emit setScore(score);
                     setApple();
                 }
                 else {
-                    omnomnom->moveSnake(omnomnom->first->x(),m_rows*W-W);
+                    omnomnom->moveSnake(omnomnom->my_snake.at(0).x(),m_rows*W-W);
                 }
             }
-            else if(*omnomnom->first==apple){
-                omnomnom->moveSnake(omnomnom->first->x(),omnomnom->first->y()-W, true);
+            else if(omnomnom->my_snake.at(0)==apple){
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x(),omnomnom->my_snake.at(0).y()-W, true);
                 score+=10;
                 emit setScore(score);
                 setApple();
             }
             else{
-                omnomnom->moveSnake(omnomnom->first->x(),omnomnom->first->y()-W);
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x(),omnomnom->my_snake.at(0).y()-W);
             }
             break;
         case down:
-            if(omnomnom->first->y()==m_rows*W-W){
-                if(*omnomnom->first==apple){
-                    omnomnom->moveSnake(omnomnom->first->x(), 0, true);
+            if(omnomnom->my_snake.at(0).y()==m_rows*W-W){
+                if(omnomnom->my_snake.at(0)==apple){
+                    omnomnom->moveSnake(omnomnom->my_snake.at(0).x(), 0, true);
                     score+=10;
                     emit setScore(score);
                     setApple();
                 }
-                omnomnom->moveSnake(omnomnom->first->x(), 0);
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x(), 0);
             }
-            else if(*omnomnom->first==apple){
-                omnomnom->moveSnake(omnomnom->first->x(),omnomnom->first->y()+W, true);
+            else if(omnomnom->my_snake.at(0)==apple){
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x(),omnomnom->my_snake.at(0).y()+W, true);
                 score+=10;
                 emit setScore(score);
                 setApple();
             }
             else{
-                omnomnom->moveSnake(omnomnom->first->x(),omnomnom->first->y()+W);
+                omnomnom->moveSnake(omnomnom->my_snake.at(0).x(),omnomnom->my_snake.at(0).y()+W);
             }
             break;
         default:
@@ -223,8 +227,9 @@ void Space::timerEvent(QTimerEvent *event)
 
 void Space::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << "keyPressEvent";
-
+    /*Определяем текущее направление движения змеи.
+     * Далее исключаем реакцию на движение в обратном направлении.
+     * Если змея движется вверх, то можем повернуть либо вправо, либо влево. Поворот вниз исключен.*/
     if(gameOn)
     {
         switch (direct){
@@ -252,15 +257,11 @@ void Space::keyPressEvent(QKeyEvent *event)
 
 void Space::setApple()
 {
-    qDebug() << "setApple";
-
+    /*Создаем копию контейнера, содержащего все ячейки поля и исплючаем из него текущее ячейки, занятые змеей.
+     *Функцией qrand - рандомно в поле, содердащем только свободные ячейки, устанавливаем яблоко.*/
    QList<QPoint> actualArea = appleArea;
-   qDebug() << actualArea.size();
-
    for(auto&x:omnomnom->my_snake){
        actualArea.removeAt(std::find(actualArea.begin(),actualArea.end(), x)-actualArea.begin());
    }
-   qDebug() << actualArea.size();
-
    apple = actualArea.at(qrand()%actualArea.size());
 }

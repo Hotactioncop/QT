@@ -6,9 +6,6 @@ class Snake
 {
 public:
     QList<QPoint> my_snake = {QPoint(60,140),QPoint(40,140),QPoint(20,140),QPoint(0,140)};
-    QPoint* first;
-    QPoint* last;
-
 public:
     Snake();
     void moveSnake(uint, uint, bool eat = false);

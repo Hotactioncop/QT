@@ -7,8 +7,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //Для корректной работы функции qrand:
     QTime midnight(0,0,0);
     qsrand(midnight.secsTo(QTime::currentTime()));
+    //Устанавливаем фон игры
     QPixmap pix;
     QPalette palette;
     pix.load("Images/BackgroundCrystals.png");
@@ -23,6 +25,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::changePauseButton()
 {
+    //Слот кнопки "Pause". При вызове - меняем название на "Continue" и наоборот, а так же меняем иконку.
     if(ui->buttonPause->text()=="Pause"){
         ui->buttonPause->setText("Continue");
         QIcon icon;
