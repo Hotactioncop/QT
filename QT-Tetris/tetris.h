@@ -2,7 +2,7 @@
 #define TETRIS_H
 
 #include <QMainWindow>
-
+#include <QTime>
 namespace Ui {
 class Tetris;
 }

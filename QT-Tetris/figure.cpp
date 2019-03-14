@@ -28,8 +28,7 @@ void Figure::rotateColors(bool b)
 
 void Figure::MakeRandomColors()
 {
-    QTime midnight(0,0,0);
-    qsrand(midnight.secsTo(QTime::currentTime()));
+
     for(auto&x:arr)
     {
         x = e_col[qrand()%3];

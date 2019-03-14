@@ -7,6 +7,8 @@ Tetris::Tetris(QWidget *parent) :
     ui(new Ui::Tetris)
 {
     ui->setupUi(this);
+    QTime midnight(0,0,0);
+    qsrand(midnight.secsTo(QTime::currentTime()));
     QPixmap pix;
     QPalette palette;
     pix.load("Images/BackGround.jpg");
