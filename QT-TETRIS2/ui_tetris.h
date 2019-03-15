@@ -12,7 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
@@ -25,6 +24,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "glass.h"
+#include "nextfigure.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -45,7 +45,7 @@ public:
     Glass *widgetGlass;
     QVBoxLayout *verticalLayout_2;
     QLabel *labelNextFigure;
-    QFrame *frameNextFigure;
+    NextFigure *frameNextFigure;
     QSpacerItem *verticalSpacer_3;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -156,7 +156,7 @@ public:
 
         verticalLayout_2->addWidget(labelNextFigure);
 
-        frameNextFigure = new QFrame(centralWidget);
+        frameNextFigure = new NextFigure(centralWidget);
         frameNextFigure->setObjectName(QString::fromUtf8("frameNextFigure"));
         frameNextFigure->setMinimumSize(QSize(180, 60));
         frameNextFigure->setMaximumSize(QSize(180, 60));
@@ -191,6 +191,8 @@ public:
         QObject::connect(PauseButton, SIGNAL(clicked()), widgetGlass, SLOT(pausePressed()));
         QObject::connect(StopButton, SIGNAL(clicked()), widgetGlass, SLOT(stopPressed()));
         QObject::connect(widgetGlass, SIGNAL(sendPauseSignal()), TETRIS, SLOT(changePauseButton()));
+        QObject::connect(widgetGlass, SIGNAL(sendNextFigure(Figure*)), frameNextFigure, SLOT(getNext(Figure*)));
+        QObject::connect(StopButton, SIGNAL(clicked()), frameNextFigure, SLOT(gameStop()));
 
         QMetaObject::connectSlotsByName(TETRIS);
     } // setupUi

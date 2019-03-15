@@ -8,6 +8,7 @@ TETRIS::TETRIS(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::TETRIS)
 {
+    setFixedSize(640,480);
     QTime midnight(0,0,0);
     qsrand(midnight.secsTo(QTime::currentTime()));
     ui->setupUi(this);

@@ -18,20 +18,33 @@ Glass::Glass(QWidget *parent) : QWidget(parent)
 
 void Glass::recolorGlass()
 {
+    //Копируем цвет фигуры в форму. Меняем следующую и текущую фигуру и обновляем следующую фигуру. Вызываем метод проверки формы на заполненный ряд.
     for(auto&X:current->myFigure){
         glassArray[X.y()/W][X.x()/W]=current->figCol;
     }
     std::swap(next,current);
     next->refresh();
+    emit sendNextFigure(next);
     refreshGlass();
+    for(auto&X:current->myFigure){              // Если место появления новой фигуры уже занято, то останавливаю игру и вывожу на экран заполненную форму.
+        if(glassArray[X.y()/W][X.x()/W]!=emptyCell){
+                killTimer(idTimer);
+                gameOn = false;
+                QString str = "GAME OVER.";
+                QMessageBox::information(this,"Message", str);
+                return;
+        }
+    }
+    repaint();
 }
 
 void Glass::spaceFigure()
 {
+    //По нажатию клавиши "SPACE" опускаем фигуру вниз, пока не встретим конец формы или другой цвет.
+    //Если встретим конец формы или другой цвет на пути, то вызываем метод перерисовки фигуры в нашу форму и вызова новой фигуры в начало.
     for(auto&X:current->myFigure){
         if(X.y()==W*(m_rows-1) || glassArray[(X.y()+W)/W][X.x()/W]!=emptyCell){
             recolorGlass();
-            repaint();
             return;
         }
     }
@@ -40,6 +53,7 @@ void Glass::spaceFigure()
 
 void Glass::refreshGlass()
 {
+    //Метод проверки формы на заполненный ряд. Если ряд заполнен, то очищаем его и вызываем метод опускания верхних рядов вниз(передаем очищенный ряд).
     for(int i = 0; i< m_rows; i++){
         for(int j = 0; j<m_columns; j++){
             if(glassArray[i][j]==emptyCell){
@@ -57,15 +71,16 @@ void Glass::refreshGlass()
 
 void Glass::move_glass(int I)
 {
+    //Метод опускания верхних рядов вниз.
     for(int i = I; i>0; i--){
         glassArray[i]=glassArray[i-1];
     }
-    glassArray[0].fill(emptyCell);
+    glassArray[0].fill(emptyCell); //После опускания рядов - первый ряд заполняем дефолтным цветом.
 }
 
 void Glass::gameStart()
 {
-    if(gameOn){
+    if(gameOn){                     //Если игра идет, то обнуляем результаты и очищаем форму.
         if(pause){
             pause = false;
             emit sendPauseSignal();
@@ -73,15 +88,17 @@ void Glass::gameStart()
         else {
             killTimer(idTimer);
         }
-        for(auto&X:glassArray){
-            X.fill(emptyCell);
-        }
-        current->refresh();
-        next->refresh();
     }
+    for(auto&X:glassArray){
+        X.fill(emptyCell);
+    }
+    current->refresh();
+    next->refresh();
+    emit sendNextFigure(next);
     gameOn = true;
     score = 0;
     emit sendScore(score);
+    emit sendNextFigure(next);
     idTimer = startTimer(300);
     this->setFocus();
 }
@@ -112,28 +129,20 @@ void Glass::stopPressed()
         else {
             killTimer(idTimer);
         }
-        gameOn = false;
-        for(auto&X:glassArray){
-            X.fill(emptyCell);
-        }
-        current->refresh();
-        next->refresh();
-        repaint();
     }
+    gameOn = false;
+    for(auto&X:glassArray){
+        X.fill(emptyCell);
+    }
+    current->refresh();
+    next->refresh();
+
+    repaint();
 }
 
 void Glass::timerEvent(QTimerEvent *event)
 {
     if(gameOn){
-        for(auto&X:current->myFigure){
-            if(glassArray[X.y()/W][X.x()/W]!=emptyCell){
-                    killTimer(idTimer);
-                    gameOn = false;
-                    QString str = "GAME OVER. Your Score ";
-                    QMessageBox::information(this,"Message", str);
-                    return;
-            }
-        }
         for(auto&X:current->myFigure){
             if(X.y()==W*(m_rows-1) || glassArray[(X.y()+W)/W][X.x()/W]!=emptyCell){
                 recolorGlass();

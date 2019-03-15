@@ -214,7 +214,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frameNextFigure">
+       <widget class="NextFigure" name="frameNextFigure">
         <property name="minimumSize">
          <size>
           <width>180</width>
@@ -282,9 +282,20 @@
    <slots>
     <signal>sendScore(int)</signal>
     <signal>sendPauseSignal()</signal>
+    <signal>sendNextFigure(Figure*)</signal>
     <slot>gameStart()</slot>
     <slot>stopPressed()</slot>
     <slot>pausePressed()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>NextFigure</class>
+   <extends>QFrame</extends>
+   <header>nextfigure.h</header>
+   <container>1</container>
+   <slots>
+    <slot>getNext(Figure*)</slot>
+    <slot>gameStop()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -385,6 +396,38 @@
     <hint type="destinationlabel">
      <x>296</x>
      <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widgetGlass</sender>
+   <signal>sendNextFigure(Figure*)</signal>
+   <receiver>frameNextFigure</receiver>
+   <slot>getNext(Figure*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>306</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>91</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>StopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>frameNextFigure</receiver>
+   <slot>gameStop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>503</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>91</y>
     </hint>
    </hints>
   </connection>

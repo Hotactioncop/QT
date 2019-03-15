@@ -38,6 +38,7 @@ public:
 signals:
     void sendScore(int);
     void sendPauseSignal();
+    void sendNextFigure(Figure*);
 
 public slots:
     void gameStart();

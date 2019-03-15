@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         tetris.cpp \
     glass.cpp \
-    figure.cpp
+    figure.cpp \
+    nextfigure.cpp
 
 HEADERS += \
         tetris.h \
     glass.h \
-    figure.h
+    figure.h \
+    nextfigure.h
 
 FORMS += \
         tetris.ui
