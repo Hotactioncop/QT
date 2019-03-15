@@ -13,25 +13,23 @@ Glass::Glass(QWidget *parent) : QWidget(parent)
     setFixedSize(s);
     current = new Figure;
     next = new Figure;
+    pix.load("F:/ProgrammingQT/QT-TETRIS2/Images/BlueSquare.jpg");
 }
 
 void Glass::recolorGlass()
 {
     for(auto&X:current->myFigure){
-
         glassArray[X.y()/W][X.x()/W]=current->figCol;
     }
     std::swap(next,current);
-
     next->refresh();
+    refreshGlass();
 }
 
 void Glass::spaceFigure()
 {
     for(auto&X:current->myFigure){
-        qDebug() << "X=" <<(X.y()+W)/W << ", Y=" << X.x()/W;
         if(X.y()==W*(m_rows-1) || glassArray[(X.y()+W)/W][X.x()/W]!=emptyCell){
-            qDebug()<< "Вылетел тут";
             recolorGlass();
             repaint();
             return;
@@ -40,10 +38,41 @@ void Glass::spaceFigure()
     current->setDown(W);
 }
 
+void Glass::refreshGlass()
+{
+    for(int i = 0; i< m_rows; i++){
+        for(int j = 0; j<m_columns; j++){
+            if(glassArray[i][j]==emptyCell){
+                break;
+            }
+            if(j==10 && glassArray[i][j]!=emptyCell){
+                glassArray[i].fill(emptyCell);
+                score += 10*m_columns;
+                emit sendScore(score);
+                move_glass(i);
+            }
+        }
+    }
+}
+
+void Glass::move_glass(int I)
+{
+    for(int i = I; i>0; i--){
+        glassArray[i]=glassArray[i-1];
+    }
+    glassArray[0].fill(emptyCell);
+}
+
 void Glass::gameStart()
 {
     if(gameOn){
-        killTimer(idTimer);
+        if(pause){
+            pause = false;
+            emit sendPauseSignal();
+        }
+        else {
+            killTimer(idTimer);
+        }
         for(auto&X:glassArray){
             X.fill(emptyCell);
         }
@@ -52,18 +81,61 @@ void Glass::gameStart()
     }
     gameOn = true;
     score = 0;
+    emit sendScore(score);
     idTimer = startTimer(300);
     this->setFocus();
 }
 
+void Glass::pausePressed()
+{
+    if(gameOn){
+        if(pause == false){
+            killTimer(idTimer);
+            pause = true;
+            emit sendPauseSignal();
+        }
+        else {
+            idTimer = startTimer(300);
+            pause = false;
+            emit sendPauseSignal();
+        }
+    }
+}
+
+void Glass::stopPressed()
+{
+    if(gameOn){
+        if (pause == true){
+            pause = false;
+            emit sendPauseSignal();
+        }
+        else {
+            killTimer(idTimer);
+        }
+        gameOn = false;
+        for(auto&X:glassArray){
+            X.fill(emptyCell);
+        }
+        current->refresh();
+        next->refresh();
+        repaint();
+    }
+}
 
 void Glass::timerEvent(QTimerEvent *event)
 {
     if(gameOn){
         for(auto&X:current->myFigure){
-            qDebug() << "X=" <<(X.y()+W)/W << ", Y=" << X.x()/W;
+            if(glassArray[X.y()/W][X.x()/W]!=emptyCell){
+                    killTimer(idTimer);
+                    gameOn = false;
+                    QString str = "GAME OVER. Your Score ";
+                    QMessageBox::information(this,"Message", str);
+                    return;
+            }
+        }
+        for(auto&X:current->myFigure){
             if(X.y()==W*(m_rows-1) || glassArray[(X.y()+W)/W][X.x()/W]!=emptyCell){
-                qDebug()<< "Вылетел тут";
                 recolorGlass();
                 repaint();
                 return;
@@ -96,6 +168,15 @@ void Glass::keyPressEvent(QKeyEvent *event)
 {
     if(gameOn){
         if(event->key()==Qt::Key_Up){
+            QPoint p = current->myFigure[1];
+            for(int i = 0; i < current->myFigure.size(); i++){
+                int X = current->myFigure[i].x()-p.x();
+                int Y = current->myFigure[i].y()-p.y();
+                QPoint checkPoint = QPoint(p.x()+Y,p.y()-X);
+               if(checkPoint.x()<0 || checkPoint.x()>= m_columns*W || checkPoint.y()>=m_rows*W || glassArray[checkPoint.y()/W][checkPoint.x()/W]!=emptyCell){
+                   return;
+                }
+            }
            current->rotate();
            repaint();
         }
@@ -123,3 +204,4 @@ void Glass::keyPressEvent(QKeyEvent *event)
         }
     }
 }
+

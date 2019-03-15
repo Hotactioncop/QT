@@ -22,3 +22,19 @@ TETRIS::~TETRIS()
 {
     delete ui;
 }
+
+void TETRIS::changePauseButton()
+{
+    if(ui->PauseButton->text()=="Pause"){
+        ui->PauseButton->setText("Continue");
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("Images/Start_37108.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        ui->PauseButton->setIcon(icon);
+    }
+    else {
+        ui->PauseButton->setText("Pause");
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("Images/PauseDisabled_26933.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        ui->PauseButton->setIcon(icon);
+    }
+}

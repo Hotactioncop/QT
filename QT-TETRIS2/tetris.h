@@ -18,6 +18,8 @@ public:
 
 private:
     Ui::TETRIS *ui;
+public slots:
+    void changePauseButton();
 };
 
 #endif // TETRIS_H

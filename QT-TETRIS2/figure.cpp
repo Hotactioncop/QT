@@ -5,31 +5,31 @@ Figure::Figure()
     figView = static_cast<figurs>(qrand()%7);
     if (figView==0){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(80,20)};
-        figCol = Qt::darkBlue;
+        figCol = QColor(0, 191, 255);
     }
     else if(figView==1){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(120,20)};
-        figCol = Qt::yellow;
+        figCol = QColor(30, 144, 255);
     }
     else if(figView==2){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(100,20)};
-        figCol = Qt::green;
+        figCol = QColor(100, 149, 237);
     }
     else if(figView==3){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(140,0)};
-        figCol = Qt::darkCyan;
+        figCol = QColor(123, 104, 238);
     }
     else if(figView==4){
         myFigure=QVector<QPoint>{QPoint(80,20),QPoint(100,20),QPoint(100,00),QPoint(120,00)};
-        figCol = Qt::magenta;
+        figCol = QColor(65, 105, 225);
     }
     else if(figView==5){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(100,20),QPoint(120,20)};
-        figCol = Qt::blue;
+        figCol = QColor(138, 43, 226);
     }
     else if(figView==6){
         myFigure=QVector<QPoint>{QPoint(100,0),QPoint(120,0),QPoint(100,20),QPoint(120,20)};
-        figCol = Qt::white;
+        figCol = QColor(148, 0, 211);
     }
 }
 
@@ -57,31 +57,31 @@ void Figure::refresh()
     figView = static_cast<figurs>(qrand()%7);
     if (figView==0){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(80,20)};
-        figCol = Qt::darkBlue;
+        figCol = QColor(0, 191, 255);
     }
     else if(figView==1){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(120,20)};
-        figCol = Qt::yellow;
+        figCol = QColor(30, 144, 255);
     }
     else if(figView==2){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(100,20)};
-        figCol = Qt::green;
+        figCol = QColor(100, 149, 237);
     }
     else if(figView==3){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(120,0),QPoint(140,0)};
-        figCol = Qt::darkCyan;
+        figCol = QColor(123, 104, 238);
     }
     else if(figView==4){
         myFigure=QVector<QPoint>{QPoint(80,20),QPoint(100,20),QPoint(100,00),QPoint(120,00)};
-        figCol = Qt::magenta;
+        figCol = QColor(65, 105, 225);
     }
     else if(figView==5){
         myFigure=QVector<QPoint>{QPoint(80,0),QPoint(100,0),QPoint(100,20),QPoint(120,20)};
-        figCol = Qt::blue;
+        figCol = QColor(138, 43, 226);
     }
     else if(figView==6){
         myFigure=QVector<QPoint>{QPoint(100,0),QPoint(120,0),QPoint(100,20),QPoint(120,20)};
-        figCol = Qt::white;
+        figCol = QColor(148, 0, 211);
     }
 }
 

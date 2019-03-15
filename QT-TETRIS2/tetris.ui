@@ -280,7 +280,11 @@
    <header>glass.h</header>
    <container>1</container>
    <slots>
+    <signal>sendScore(int)</signal>
+    <signal>sendPauseSignal()</signal>
     <slot>gameStart()</slot>
+    <slot>stopPressed()</slot>
+    <slot>pausePressed()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -320,5 +324,72 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>widgetGlass</sender>
+   <signal>sendScore(int)</signal>
+   <receiver>lcdNumber</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>306</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>503</x>
+     <y>335</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>PauseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>widgetGlass</receiver>
+   <slot>pausePressed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>503</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>306</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>StopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>widgetGlass</receiver>
+   <slot>stopPressed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>503</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>306</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widgetGlass</sender>
+   <signal>sendPauseSignal()</signal>
+   <receiver>TETRIS</receiver>
+   <slot>changePauseButton()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>306</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>296</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>changePauseButton()</slot>
+ </slots>
 </ui>
