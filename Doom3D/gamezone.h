@@ -31,7 +31,9 @@ class GameZone : public QWidget
     bool gameOn = false;
     size_t rect_x;
     size_t rect_y;
-    QVector<std::pair<QPoint, QPoint>> game;
+    QVector<std::pair<std::pair<QPoint, QPoint>,QColor>> game;
+    QVector<QPoint> my_ray;
+    QVector<std::pair<int, QColor>> color{std::make_pair(1,QColor(47,60,78)),std::make_pair(1,QColor(79,112,135)),std::make_pair(1,QColor(252,176,65)),std::make_pair(1,QColor(222,112,60))};
     const char map[257] =
     {
         "0000222222220000"\
